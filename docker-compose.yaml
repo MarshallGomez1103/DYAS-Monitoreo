@@ -55,8 +55,8 @@ services:
   prometheus:
     image: prom/prometheus:v3.15.0
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - ./prometheus/alertas.yml:/etc/prometheus/alertas.yml:ro
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro,z
+      - ./prometheus/alertas.yml:/etc/prometheus/alertas.yml:ro,z
     ports:
       - "9090:9090"
     healthcheck:
@@ -80,8 +80,8 @@ services:
       # la fuente de datos Jaeger de Grafana usa la API nueva (/api/v3).
       GF_FEATURE_TOGGLES_ENABLE: jaegerEnableGrpcEndpoint
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
-      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro,z
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro,z
     ports:
       - "3000:3000"
     depends_on:
@@ -108,7 +108,7 @@ services:
     image: grafana/k6:2.3.0
     profiles: ["trafico"]
     volumes:
-      - ./k6:/scripts:ro
+      - ./k6:/scripts:ro,z
     environment:
       PEDIDOS_URL: http://pedidos:8081
       INVENTARIO_URL: http://inventario:8082
